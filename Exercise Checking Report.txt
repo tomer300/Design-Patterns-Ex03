@@ -1,0 +1,9 @@
+==========================Exercise Checking Report==========================
+Exercise No...........: 2
+First Student Details.: 305738130- Tomer Treshchansky
+Second Student Details: 311250757- Niv Dunay
+Delivery Date.........: 30 - Dec - 2018
+Delivered In Delay....: No
+Delay Reason..........: -
+Comments..............: need to include assembly reference to System.Device.dll in MyFacebookApp.Model.
+=======================End Exercise Checking Report=========================

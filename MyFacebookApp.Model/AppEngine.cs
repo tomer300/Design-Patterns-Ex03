@@ -9,6 +9,19 @@ namespace MyFacebookApp.Model
 		private Match	m_Match;
 		private IDistance m_DistanceAdapter;
 
+		public Job Job
+		{
+			get
+			{
+				if (m_Job == null)
+				{
+					m_Job = new Job(Friends);
+				}
+
+				return m_Job;
+			}
+		}
+
 		public IDistance DistanceBetweenTwoCoordinatesAdapter
 		{
 			get
@@ -125,16 +138,6 @@ namespace MyFacebookApp.Model
 			}
 
 			return m_Match.FindAMatch(i_ChoseGirls, i_ChoseBoys, i_AgeRange);
-		}
-
-		public FacebookObjectCollection<AppUser> FindHitechWorkersContacts()
-		{
-			if (m_Job == null)
-			{
-				m_Job = new Job(LoggedUser.GetFriends());
-			}
-
-			return m_Job.FindHitechWorkersContacts();
 		}
 	}
 }

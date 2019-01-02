@@ -34,10 +34,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Facebook">
-      <HintPath>..\MyFacebookApp.Model\Resources\Facebook.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Tomer\ComputerScience\Year 3\Semester A\Design Patterns\Projects\Ex3\A19 Ex03 TomerTreshchansky 305738130 NivDunay 311250757\MyFacebookApp.Model\Resources\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="FbGraphApiWrapper">
-      <HintPath>..\MyFacebookApp.Model\Resources\FbGraphApiWrapper.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Tomer\ComputerScience\Year 3\Semester A\Design Patterns\Projects\Ex3\A19 Ex03 TomerTreshchansky 305738130 NivDunay 311250757\MyFacebookApp.Model\Resources\FbGraphApiWrapper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

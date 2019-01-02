@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using FacebookWrapper.ObjectModel;
 using MyFacebookApp.Model;
@@ -23,12 +18,18 @@ namespace MyFacebookApp.View
 
 		private void findAJobButton_Click(object sender, EventArgs e)
 		{
-			FacebookObjectCollection<AppUser>	hitechWorkerContacts;
+			FacebookObjectCollection<AppUser>	hitechWorkerContacts = new FacebookObjectCollection<AppUser>();
 			
 			listBoxJobs.Items.Clear();
 			try
 			{
-				hitechWorkerContacts = r_AppEngine.FindHitechWorkersContacts();
+				r_AppEngine.Job.TestIsHitechWorker += r_AppEngine.Job.DoesWorksAtKnownHitechCompany;
+				r_AppEngine.Job.TestIsHitechRelated += r_AppEngine.Job.DoesWorksAtPotentiallyHitechRelatedCompany;
+				foreach (AppUser currentContact in r_AppEngine.Job)
+				{
+					hitechWorkerContacts.Add(currentContact);
+				}
+				//hitechWorkerContacts = r_AppEngine.FindHitechWorkersContacts();
 				if (hitechWorkerContacts != null && hitechWorkerContacts.Count > 0)
 				{
 					FacebookView.CreateThread(() => 

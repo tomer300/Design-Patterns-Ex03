@@ -40,6 +40,7 @@
     <Compile Include="AppSettings.cs" />
     <Compile Include="AppUser.cs" />
     <Compile Include="DistanceBetweenTwoCoordinatesAdapter.cs" />
+    <Compile Include="HitechKeyWord.cs" />
     <Compile Include="IDistance.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="FacebookManager.cs" />
@@ -49,13 +50,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="WorkPlace.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Facebook">
-      <HintPath>Resources\Facebook.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Tomer\ComputerScience\Year 3\Semester A\Design Patterns\Projects\Ex3\A19 Ex03 TomerTreshchansky 305738130 NivDunay 311250757\MyFacebookApp.Model\Resources\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="FbGraphApiWrapper">
-      <HintPath>Resources\FbGraphApiWrapper.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Tomer\ComputerScience\Year 3\Semester A\Design Patterns\Projects\Ex3\A19 Ex03 TomerTreshchansky 305738130 NivDunay 311250757\MyFacebookApp.Model\Resources\FbGraphApiWrapper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

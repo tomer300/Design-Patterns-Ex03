@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
@@ -6,16 +7,14 @@ using FacebookWrapper.ObjectModel;
 
 namespace MyFacebookApp.Model
 {
-	public class Job
+	public class Job : IEnumerable<AppUser>
 	{
-		private readonly HashSet<string>					r_HitechWorkPlaces;
-		private readonly HashSet<string>					r_HitechKeyWords;
 		private readonly FacebookObjectCollection<AppUser>	r_UserFriends;
-
+		private HashSet<string>								m_HitechWorkPlaces;
+		private HashSet<string>								m_HitechKeyWords;
+		public Func<AppUser, bool> TestIsHitechWorker, TestIsHitechRelated;
 		public Job(FacebookObjectCollection<AppUser> i_UserFriends)
 		{
-			r_HitechWorkPlaces = buildSetFromXMLFile<WorkPlace>(MyFacebookApp.Model.Properties.Resources.israeliHitechList);
-			r_HitechKeyWords = buildSetFromXMLFile<HitechKeyWord>(MyFacebookApp.Model.Properties.Resources.hitechKeyWords);
 			r_UserFriends = i_UserFriends;
 		}
 
@@ -40,45 +39,38 @@ namespace MyFacebookApp.Model
 			return setFromFile;
 		}
 
-		internal FacebookObjectCollection<AppUser> FindHitechWorkersContacts()
+		public IEnumerator<AppUser> GetEnumerator()
 		{
-			FacebookObjectCollection<AppUser>	hitechWorkingContacts = new FacebookObjectCollection<AppUser>();
-			string								exceptionMessage = string.Empty;
-
-			foreach (AppUser currentFriend in r_UserFriends)
+			foreach (AppUser possibleContact in r_UserFriends)
 			{
-				try
+				if ((TestIsHitechWorker != null && TestIsHitechWorker.Invoke(possibleContact)) || (TestIsHitechRelated != null && TestIsHitechRelated.Invoke(possibleContact)))
 				{
-					if (worksAtKnownHitechCompany(currentFriend) || worksAtPotentiallyHitechRelatedCompany(currentFriend))
-					{
-						hitechWorkingContacts.Add(currentFriend);
-					}
-				}
-				catch (Exception ex)
-				{
-					exceptionMessage = ex.Message;
+					yield return possibleContact;
 				}
 			}
-
-			if (hitechWorkingContacts.Count == 0 && !string.IsNullOrEmpty(exceptionMessage))
-			{
-				throw new Facebook.FacebookApiException(exceptionMessage);
-			}
-
-			return hitechWorkingContacts;
 		}
 
-		private bool worksAtPotentiallyHitechRelatedCompany(AppUser i_CurrentFriend)
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+
+		public bool DoesWorksAtPotentiallyHitechRelatedCompany(AppUser i_CurrentFriend)
 		{
 			Page workPlace;
 			bool doesAtPotentiallyHitechRelatedCompany = false;
-
+			
+			if(m_HitechKeyWords == null)
+			{
+				m_HitechKeyWords = buildSetFromXMLFile<HitechKeyWord>(MyFacebookApp.Model.Properties.Resources.hitechKeyWords);
+			}
+			
 			workPlace = i_CurrentFriend.GetWorkPlace();
 			if (workPlace != null)
 			{
 				foreach (string wordInDescriptionOfWorkPlace in workPlace.Description?.Split(' '))
 				{
-					if (r_HitechKeyWords.Contains(wordInDescriptionOfWorkPlace))
+					if (m_HitechKeyWords.Contains(wordInDescriptionOfWorkPlace))
 					{
 						doesAtPotentiallyHitechRelatedCompany = true;
 					}
@@ -88,38 +80,23 @@ namespace MyFacebookApp.Model
 			return doesAtPotentiallyHitechRelatedCompany;
 		}
 
-		private bool worksAtKnownHitechCompany(AppUser i_CurrentFriend)
+		public bool DoesWorksAtKnownHitechCompany(AppUser i_CurrentFriend)
 		{
 			bool	doesWorksAtKnownHitechCompany = false;
 			string	workPlace;
 
+			if (m_HitechWorkPlaces == null)
+			{
+				m_HitechWorkPlaces = buildSetFromXMLFile<WorkPlace>(MyFacebookApp.Model.Properties.Resources.israeliHitechList);
+			}
+
 			workPlace = i_CurrentFriend.GetWorkPlace()?.Name.ToLower();
-			if (r_HitechWorkPlaces.Contains(workPlace))
+			if (m_HitechWorkPlaces.Contains(workPlace))
 			{
 				doesWorksAtKnownHitechCompany = true;
 			}
 
 			return doesWorksAtKnownHitechCompany;
-		}
-
-		public class HitechKeyWord
-		{
-			public string m_KeyWord { get; set; }
-
-			public override string ToString()
-			{
-				return m_KeyWord.ToLower();
-			}
-		}
-
-		public class WorkPlace
-		{
-			public string m_Name { get; set; }
-
-			public override string ToString()
-			{
-				return m_Name.ToLower();
-			}
 		}
 	}
 }

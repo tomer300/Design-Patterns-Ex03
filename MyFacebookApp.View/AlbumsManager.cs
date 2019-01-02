@@ -30,7 +30,7 @@ namespace MyFacebookApp.View
 					if (currentAlbum.Count > 0)
 					{
 						PictureWrapper currentAlbumPictureWrapper;
-						PictureBox currentAlbumPictureBox;
+						PictureBoxDecorator currentAlbumPictureBox;
 
 						try
 						{
@@ -48,8 +48,6 @@ namespace MyFacebookApp.View
 								currentAlbumPictureBox = currentAlbumPictureWrapper.PictureBox;
 								currentAlbumPictureBox.Enabled = false;
 								currentAlbumPictureBox.Cursor = Cursors.Hand;
-								currentAlbumPictureBox.MouseEnter += new EventHandler(album_Enter);
-								currentAlbumPictureBox.MouseLeave += new EventHandler(album_Leave);
 								currentAlbumPictureBox.Click += (sender, e) =>
 								{
 									FacebookView.CreateThread(() => album_Click(currentAlbum));

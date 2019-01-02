@@ -64,19 +64,19 @@ namespace MyFacebookApp.View
 				try
 				{
 					PictureWrapper friendPictureWrapper = new PictureWrapper(profilePictureURL);
-					DetailedProfilePicture friendPicture = new DetailedProfilePicture(
+					WriteablePictureBox friendPicture = new WriteablePictureBox(
 						friendPictureWrapper.PictureBox,
 						firstName,
 						lastName);
-					friendPicture.FriendProfilePicture.Enabled = false;
+					friendPicture.Enabled = false;
 					if (FriendOnClickDelegate != null)
 					{
-						friendPicture.FriendProfilePicture.Name = string.Format("{0} {1}", firstName, lastName);
-						friendPicture.FriendProfilePicture.Cursor = Cursors.Hand;
-						friendPicture.FriendProfilePicture.Click += (user, e) => FriendOnClickDelegate.Invoke(friendPicture.FriendProfilePicture, new AppUserEventArgs(i_Friend));
+						friendPicture.Name = string.Format("{0} {1}", firstName, lastName);
+						friendPicture.Cursor = Cursors.Hand;
+						friendPicture.Click += (user, e) => FriendOnClickDelegate.Invoke(friendPicture, new AppUserEventArgs(i_Friend));
 					}
 
-					r_DisplayPanel.Invoke(new Action(() => r_DisplayPanel.Controls.Add(friendPicture.FriendProfilePicture)));
+					r_DisplayPanel.Invoke(new Action(() => r_DisplayPanel.Controls.Add(friendPicture)));
 				}
 				catch (FacebookApiLimitException ex)
 				{

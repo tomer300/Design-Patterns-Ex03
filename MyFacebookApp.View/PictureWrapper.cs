@@ -7,11 +7,13 @@ namespace MyFacebookApp.View
 {
 	public class PictureWrapper
 	{
-		public PictureBox PictureBox { get; private set; }
+		public PictureBoxDecorator PictureBox { get; private set; }
 
 		public PictureWrapper(string i_PictureURL, int i_Width = 100, int i_Height = 100, PictureBoxSizeMode i_PictureBoxSizeMode = PictureBoxSizeMode.StretchImage)
 		{
-			PictureBox = new PictureBox { Width = i_Width, Height = i_Height };
+			PictureBox = new HoverablePictureBox(null);
+			PictureBox.Width = i_Width;
+			PictureBox.Height = i_Height;
 
 			if (!string.IsNullOrEmpty(i_PictureURL))
 			{

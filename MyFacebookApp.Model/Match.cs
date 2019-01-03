@@ -55,7 +55,7 @@ namespace MyFacebookApp.Model
 		{
 			//
 		}
-
+		
 		protected virtual bool DoesCandidateCorrespondUserPreferences(AppUser i_CurrentPotentialMatch,bool i_ChoseBoys, bool i_ChoseGirls, string i_AgeRange)
 		{
 			bool needToBeAdded = false;

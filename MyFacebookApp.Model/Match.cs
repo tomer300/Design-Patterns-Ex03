@@ -1,18 +1,24 @@
 ﻿using System;
 using FacebookWrapper.ObjectModel;
 using static FacebookWrapper.ObjectModel.User;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace MyFacebookApp.Model
 {
 	public class Match
 	{
 		private readonly FacebookObjectCollection<AppUser> r_UserFriends;
-
+		//private IMatchStrategy m_MatchStrategy;
 		public Match(FacebookObjectCollection<AppUser> i_UserFriends)
 		{
 			r_UserFriends = i_UserFriends;
 		}
 
+		/*public SetMatchStrategy(IMatchStrategy i_Strategy)
+		{
+			m_MatchStrategy = ui
+		}*/
 		internal FacebookObjectCollection<AppUser> FindAMatch(bool i_ChoseGirls, bool i_ChoseBoys, string i_AgeRange)
 		{
 			FacebookObjectCollection<AppUser>	potentialMatches = new FacebookObjectCollection<AppUser>();
@@ -22,27 +28,11 @@ namespace MyFacebookApp.Model
 			{
 				try
 				{
-					if (isUserSingle(currentPotentialMatch) && isUserWithinChosenAgeRange(currentPotentialMatch, i_AgeRange))
+					if (IsPotentialMatchAvailable(currentPotentialMatch) && 
+						DoesCandidateCorrespondUserPreferences(currentPotentialMatch, i_ChoseBoys, i_ChoseGirls, i_AgeRange))
 					{
-						if ((!i_ChoseBoys && !i_ChoseGirls) || (i_ChoseBoys && i_ChoseGirls))
-						{
-							potentialMatches.Add(currentPotentialMatch);
-						}
-						else
-						{
-							eGender? userGender = currentPotentialMatch.GetGender();
-							if (userGender != null)
-							{
-								if (i_ChoseBoys && userGender == eGender.male)
-								{
-									potentialMatches.Add(currentPotentialMatch);
-								}
-								else if (i_ChoseGirls && userGender == eGender.female)
-								{
-									potentialMatches.Add(currentPotentialMatch);
-								}
-							}
-						}
+
+						potentialMatches.Add(currentPotentialMatch);
 					}
 				}
 				catch (Exception ex)
@@ -56,13 +46,46 @@ namespace MyFacebookApp.Model
 				throw new Facebook.FacebookApiException(exceptionMessage);
 			}
 
+			ProcessMatchesCollection(ref potentialMatches);
+
 			return potentialMatches;
 		}
 
-		private bool isUserSingle(AppUser i_CurrentPotentialMatch)
+		protected virtual void ProcessMatchesCollection(ref FacebookObjectCollection<AppUser> potentialMatches)
 		{
-			bool					isSingle = false;
-			eRelationshipStatus?	userRelationshipStatus = i_CurrentPotentialMatch.GetRelationshipStatus();
+			//
+		}
+
+		protected virtual bool DoesCandidateCorrespondUserPreferences(AppUser i_CurrentPotentialMatch,bool i_ChoseBoys, bool i_ChoseGirls, string i_AgeRange)
+		{
+			bool needToBeAdded = false;
+			 
+			if (isUserWithinChosenAgeRange(i_CurrentPotentialMatch, i_AgeRange))
+			{
+				if ((!i_ChoseBoys && !i_ChoseGirls) || (i_ChoseBoys && i_ChoseGirls))
+				{
+					needToBeAdded = true;
+				}
+				else
+				{
+					eGender? userGender = i_CurrentPotentialMatch.GetGender();
+					if (userGender != null)
+					{
+						if (i_ChoseBoys && userGender == eGender.male || i_ChoseGirls && userGender == eGender.female)
+						{
+							needToBeAdded = true;
+						}
+					}
+				}
+			}
+
+			return needToBeAdded;
+		}
+
+		protected virtual bool IsPotentialMatchAvailable(AppUser i_CurrentPotentialMatch)
+		{
+			bool isSingle = false;
+			eRelationshipStatus? userRelationshipStatus = i_CurrentPotentialMatch.GetRelationshipStatus();
 
 			if (userRelationshipStatus != null)
 			{

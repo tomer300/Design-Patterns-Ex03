@@ -65,9 +65,13 @@ namespace MyFacebookApp.View
 				{
 					PictureWrapper friendPictureWrapper = new PictureWrapper(profilePictureURL);
 					WriteablePictureBox friendPicture = new WriteablePictureBox(
-						friendPictureWrapper.PictureBox,
+						new HoverablePictureBox(null),
 						firstName,
 						lastName);
+					friendPicture.Height = 100;
+					friendPicture.Width = 100;
+					friendPicture.Load(profilePictureURL);
+					friendPicture.SizeMode = PictureBoxSizeMode.StretchImage;
 					friendPicture.Enabled = false;
 					if (FriendOnClickDelegate != null)
 					{

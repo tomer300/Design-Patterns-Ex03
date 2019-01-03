@@ -42,9 +42,11 @@
     <Compile Include="DistanceBetweenTwoCoordinatesAdapter.cs" />
     <Compile Include="HitechKeyWord.cs" />
     <Compile Include="IDistance.cs" />
+    <Compile Include="IMatchStrategy.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="FacebookManager.cs" />
     <Compile Include="Match.cs" />
+    <Compile Include="FacebookMatchStrategy.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

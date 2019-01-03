@@ -9,6 +9,16 @@ namespace MyFacebookApp.View
 		{
 			FirstName = i_FirstName;
 			LastName = i_LastName;
+			
+		}
+
+		private void WriteablePictureBox_Paint(object sender, PaintEventArgs e)
+		{
+			WriteablePictureBox picture = sender as WriteablePictureBox;
+			if(picture != null)
+			{
+				writeNameOnFriendPicture(e);
+			}
 		}
 
 		public string FirstName { get; private set; }

@@ -14,5 +14,9 @@ namespace MyFacebookApp.View
 		{
 			m_DecoratedPictureBox = i_DecoratedPictureBox;
 		}
+		protected virtual void Operation()
+		{
+
+		}
 	}
 }

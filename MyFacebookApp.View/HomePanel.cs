@@ -77,8 +77,7 @@ namespace MyFacebookApp.View
 
 		private void albumsButton_Click(object sender, EventArgs e)
 		{
-			displayAlbums();
-			//FacebookView.CreateThread(displayAlbums);
+			FacebookView.CreateThread(displayAlbums);
 		}
 
 		private void displayAlbums()

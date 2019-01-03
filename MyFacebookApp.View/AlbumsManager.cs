@@ -30,7 +30,7 @@ namespace MyFacebookApp.View
 					if (currentAlbum.Count > 0)
 					{
 						PictureWrapper currentAlbumPictureWrapper;
-						PictureBoxDecorator currentAlbumPictureBox;
+						HoverablePictureBox currentAlbumPictureBox;
 
 						try
 						{
@@ -45,9 +45,16 @@ namespace MyFacebookApp.View
 							try
 							{
 								currentAlbumPictureWrapper = new PictureWrapper(albumPictureURL);
-								currentAlbumPictureBox = currentAlbumPictureWrapper.PictureBox;
+								//currentAlbumPictureBox = currentAlbumPictureWrapper.PictureBox;
+								currentAlbumPictureBox = new HoverablePictureBox(null);
+								currentAlbumPictureBox.Height = 100;
+								currentAlbumPictureBox.Width = 100;
+								currentAlbumPictureBox.LoadAsync(albumPictureURL);
+								currentAlbumPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
 								currentAlbumPictureBox.Enabled = false;
 								currentAlbumPictureBox.Cursor = Cursors.Hand;
+								/*currentAlbumPictureBox.MouseEnter += new EventHandler(album_Enter);
+								currentAlbumPictureBox.MouseLeave += new EventHandler(album_Leave);*/
 								currentAlbumPictureBox.Click += (sender, e) =>
 								{
 									FacebookView.CreateThread(() => album_Click(currentAlbum));

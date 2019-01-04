@@ -29,7 +29,7 @@ namespace MyFacebookApp.View
 				{
 					hitechWorkerContacts.Add(currentContact);
 				}
-				//hitechWorkerContacts = r_AppEngine.FindHitechWorkersContacts();
+
 				if (hitechWorkerContacts != null && hitechWorkerContacts.Count > 0)
 				{
 					FacebookView.CreateThread(() => 
@@ -109,7 +109,7 @@ namespace MyFacebookApp.View
 			{
 				lastChosenContactPhoto.BorderStyle = BorderStyle.None;
 			}
-
+			
 			m_LastChosenContactIndex = listBoxJobs.SelectedIndex;
 			contactClicked = listBoxJobs.Items[m_LastChosenContactIndex] as ContactItem;
 			if (contactClicked != null)
@@ -135,6 +135,19 @@ namespace MyFacebookApp.View
 			PictureBox	clickedContact = sender as PictureBox;
 			ContactItem currentContactInfo;
 			string		contactName;
+			FriendsDisplayer.AppUserEventArgs userClicked = e as FriendsDisplayer.AppUserEventArgs;
+
+			if (userClicked != null)
+			{
+				try
+				{ 
+					r_AppEngine.ContactUser(userClicked.User);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show(ex.Message);
+				}
+			}
 
 			if (clickedContact != null)
 			{

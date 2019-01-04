@@ -13,6 +13,25 @@ namespace MyFacebookApp.Model
 			r_LoggedInUser = i_LoggedInUser;
 		}
 
+		public string Email
+		{
+			get
+			{
+				string email;
+
+				try
+				{
+					email = r_LoggedInUser.Email;
+				}
+				catch (Exception)
+				{
+					throw new Facebook.FacebookApiException("Couldn't fetch user's email.");
+				}
+
+				return email;
+			}
+		}
+
 		public string ProfilePicture
 		{
 			get

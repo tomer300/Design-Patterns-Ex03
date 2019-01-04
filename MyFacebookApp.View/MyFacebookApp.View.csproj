@@ -56,9 +56,7 @@
     <Compile Include="AppScreenPanel.Designer.cs">
       <DependentUpon>AppScreenPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="WriteablePictureBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="DetailedProfilePicture.cs" />
     <Compile Include="FacebookView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,9 +64,6 @@
       <DependentUpon>FacebookView.cs</DependentUpon>
     </Compile>
     <Compile Include="FriendsDisplayer.cs" />
-    <Compile Include="HoverablePictureBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="IBackable.cs" />
     <Compile Include="ButtonAttach.cs" />
     <Compile Include="MatchPanel.cs">
@@ -90,9 +85,6 @@
       <DependentUpon>HomePanel.cs</DependentUpon>
     </Compile>
     <Compile Include="IAddable.cs" />
-    <Compile Include="PictureBoxDecorator.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="PictureWrapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

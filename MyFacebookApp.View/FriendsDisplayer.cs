@@ -10,12 +10,12 @@ namespace MyFacebookApp.View
 
 	public class FriendsDisplayer
 	{
-		private readonly FacebookObjectCollection<AppUser>	r_Friends;
-		private readonly Panel								r_DisplayPanel;
+		private readonly FacebookObjectCollection<AppUser> r_Friends;
+		private readonly Panel r_DisplayPanel;
 
-		public event friendPictureClickEvent				FriendOnClickDelegate;
+		public event friendPictureClickEvent FriendOnClickDelegate;
 
-		public FriendsDisplayer(FacebookObjectCollection<AppUser> i_Friends, Panel i_PanelToDisplayIn )
+		public FriendsDisplayer(FacebookObjectCollection<AppUser> i_Friends, Panel i_PanelToDisplayIn)
 		{
 			r_Friends = i_Friends;
 			r_DisplayPanel = i_PanelToDisplayIn;
@@ -35,7 +35,7 @@ namespace MyFacebookApp.View
 
 				foreach (Control currItem in r_DisplayPanel.Controls)
 				{
-					currItem.Enabled = true;
+					currItem.Invoke(new Action(() => currItem.Enabled = true));
 				}
 			}
 		}
@@ -64,23 +64,19 @@ namespace MyFacebookApp.View
 				try
 				{
 					PictureWrapper friendPictureWrapper = new PictureWrapper(profilePictureURL);
-					WriteablePictureBox friendPicture = new WriteablePictureBox(
-						new HoverablePictureBox(null),
+					DetailedProfilePicture friendPicture = new DetailedProfilePicture(
+						friendPictureWrapper.PictureBox,
 						firstName,
 						lastName);
-					friendPicture.Height = 100;
-					friendPicture.Width = 100;
-					friendPicture.Load(profilePictureURL);
-					friendPicture.SizeMode = PictureBoxSizeMode.StretchImage;
-					friendPicture.Enabled = false;
+					friendPicture.FriendProfilePicture.Enabled = false;
 					if (FriendOnClickDelegate != null)
 					{
-						friendPicture.Name = string.Format("{0} {1}", firstName, lastName);
-						friendPicture.Cursor = Cursors.Hand;
-						friendPicture.Click += (user, e) => FriendOnClickDelegate.Invoke(friendPicture, new AppUserEventArgs(i_Friend));
+						friendPicture.FriendProfilePicture.Name = string.Format("{0} {1}", firstName, lastName);
+						friendPicture.FriendProfilePicture.Cursor = Cursors.Hand;
+						friendPicture.FriendProfilePicture.Click += (user, e) => FriendOnClickDelegate.Invoke(friendPicture.FriendProfilePicture, new AppUserEventArgs(i_Friend));
 					}
 
-					r_DisplayPanel.Invoke(new Action(() => r_DisplayPanel.Controls.Add(friendPicture)));
+					r_DisplayPanel.Invoke(new Action(() => r_DisplayPanel.Controls.Add(friendPicture.FriendProfilePicture)));
 				}
 				catch (FacebookApiLimitException ex)
 				{

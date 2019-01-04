@@ -1,4 +1,5 @@
-﻿using FacebookWrapper.ObjectModel;
+﻿using System;
+using FacebookWrapper.ObjectModel;
 
 // App ID: 2246590548924227
 namespace MyFacebookApp.Model
@@ -135,9 +136,15 @@ namespace MyFacebookApp.Model
 			if (m_Match == null)
 			{
 				m_Match = new Match(LoggedUser.GetFriends());
+				m_Match.MatchPreferences = new FacebookMatchPreferences { PreferGirls = i_ChoseGirls, PreferBoys = i_ChoseBoys, AgeRange = i_AgeRange };
 			}
 
-			return m_Match.FindAMatch(i_ChoseGirls, i_ChoseBoys, i_AgeRange);
+			return m_Match.FindAMatch();
+		}
+
+		public void ContactUser(AppUser i_Contact)
+		{
+			Job.ContactUser(LoggedUser, i_Contact);
 		}
 	}
 }

@@ -13,6 +13,9 @@ namespace MyFacebookApp.Model
 		private HashSet<string>								m_HitechWorkPlaces;
 		private HashSet<string>								m_HitechKeyWords;
 		public Func<AppUser, bool> TestIsHitechWorker, TestIsHitechRelated;
+
+		public IContactStrategy ContactStrategy { get; set; } = new FacebookContactStrategy();
+
 		public Job(FacebookObjectCollection<AppUser> i_UserFriends)
 		{
 			r_UserFriends = i_UserFriends;
@@ -97,6 +100,22 @@ namespace MyFacebookApp.Model
 			}
 
 			return doesWorksAtKnownHitechCompany;
+		}
+
+		public void ContactUser(AppUser i_LoggedUser, AppUser i_Contact)
+		{
+			string message = string.Format(
+@"Hello {0}, your facebook friend {1} {2} has started his job-hunt in hitech!
+You've been found suitable by our system which means you work at a hitech company.
+If you think that {1} {2} has a place in your company, please contact him at: {3}.
+Thank you,
+Facebook App Team.", 
+i_Contact.FirstName, 
+i_LoggedUser.FirstName, 
+i_LoggedUser.LastName, 
+i_LoggedUser.Email);
+
+			ContactStrategy.Contact(i_LoggedUser, i_Contact, message);
 		}
 	}
 }

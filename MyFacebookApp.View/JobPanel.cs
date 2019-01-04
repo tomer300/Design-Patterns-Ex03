@@ -134,7 +134,7 @@ namespace MyFacebookApp.View
 		{
 			PictureBox	clickedContact = sender as PictureBox;
 			ContactItem currentContactInfo;
-			string		contactName;
+			string		contactName = clickedContact?.Name;
 			FriendsDisplayer.AppUserEventArgs userClicked = e as FriendsDisplayer.AppUserEventArgs;
 
 			if (userClicked != null)
@@ -142,6 +142,7 @@ namespace MyFacebookApp.View
 				try
 				{ 
 					r_AppEngine.ContactUser(userClicked.User);
+					MessageBox.Show(string.Format("Message has been sent successfully to {0}", contactName));
 				}
 				catch (Exception ex)
 				{
@@ -151,7 +152,6 @@ namespace MyFacebookApp.View
 
 			if (clickedContact != null)
 			{
-				contactName = clickedContact.Name;
 				foreach (object currentItem in listBoxJobs.Items)
 				{
 					currentContactInfo = currentItem as ContactItem;

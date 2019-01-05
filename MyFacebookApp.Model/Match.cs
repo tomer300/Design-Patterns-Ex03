@@ -5,49 +5,14 @@ using static FacebookWrapper.ObjectModel.User;
 
 namespace MyFacebookApp.Model
 {
-	public class Match
+	public class Match : MatchBase
 	{
-		private readonly FacebookObjectCollection<AppUser> r_UserFriends;
-
-		public Match(FacebookObjectCollection<AppUser> i_UserFriends)
+		public Match(FacebookObjectCollection<AppUser> i_UserFriends) : base(i_UserFriends)
 		{
-			r_UserFriends = i_UserFriends;
+			MatchPreferences = new FacebookMatchPreferences();
 		}
 
-		public IMatchPreferences MatchPreferences { get; set; } = new FacebookMatchPreferences();
-
-		internal FacebookObjectCollection<AppUser> FindAMatch()
-		{
-			FacebookObjectCollection<AppUser>	potentialMatches = new FacebookObjectCollection<AppUser>();
-			string								exceptionMessage = string.Empty;
-			
-			foreach (AppUser currentPotentialMatch in r_UserFriends)
-			{
-				try
-				{
-					if (IsPotentialMatchAvailable(currentPotentialMatch) && 
-						DoesCandidateCorrespondUserPreferences(currentPotentialMatch))
-					{
-						potentialMatches.Add(currentPotentialMatch);
-					}
-				}
-				catch (Exception ex)
-				{
-					exceptionMessage = ex.Message;
-				}
-			}
-
-			if (potentialMatches.Count == 0 && !string.IsNullOrEmpty(exceptionMessage))
-			{
-				throw new Facebook.FacebookApiException(exceptionMessage);
-			}
-
-			ProcessMatchesCollection(ref potentialMatches);
-
-			return potentialMatches;
-		}
-
-		protected virtual void ProcessMatchesCollection(ref FacebookObjectCollection<AppUser> io_PotentialMatches)
+		protected override void ProcessMatchesCollection(ref FacebookObjectCollection<AppUser> io_PotentialMatches)
 		{
 			List<AppUser> sortedList = new List<AppUser>(io_PotentialMatches);
 
@@ -59,7 +24,7 @@ namespace MyFacebookApp.Model
 			}
 		}
 		
-		protected virtual bool DoesCandidateCorrespondUserPreferences(AppUser i_CurrentPotentialMatch)
+		protected override bool DoesCandidateCorrespondUserPreferences(AppUser i_CurrentPotentialMatch)
 		{
 			bool needToBeAdded = false;
 			FacebookMatchPreferences preferences = MatchPreferences as FacebookMatchPreferences;
@@ -91,7 +56,7 @@ namespace MyFacebookApp.Model
 			return needToBeAdded;
 		}
 
-		protected virtual bool IsPotentialMatchAvailable(AppUser i_CurrentPotentialMatch)
+		protected override bool IsPotentialMatchAvailable(AppUser i_CurrentPotentialMatch)
 		{
 			bool isSingle = false;
 			eRelationshipStatus? userRelationshipStatus = i_CurrentPotentialMatch.GetRelationshipStatus();
